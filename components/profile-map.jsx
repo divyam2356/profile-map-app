@@ -165,9 +165,10 @@ export default function ProfileMap() {
 
   return (
     <div style={{ 
-      height: '600px', 
-      width: '1000px', 
-      margin: '40px auto',
+      height: '70vh', 
+      width: '100%', 
+      maxWidth: '1000px',
+      margin: '20px auto',
       borderRadius: '8px',
       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
       overflow: 'hidden',

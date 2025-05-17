@@ -3,19 +3,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { AtSign, Mail, MapPin, Phone } from "lucide-react"
+import dynamic from "next/dynamic"
+
+// Import the map component with no SSR to avoid Leaflet errors
+const ProfileDetailMap = dynamic(() => import("./profile-detail-map"), {
+  ssr: false
+})
 
 export function ProfileDetail({ profile }) {
   return (
-    <div className="grid gap-6 md:grid-cols-3">
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
       <Card className="md:col-span-1">
-        <CardHeader className="text-center">
+        <CardHeader className="text-center px-4 py-6">
           <div className="flex justify-center mb-4">
-            <Avatar className="h-24 w-24">
+            <Avatar className="h-20 w-20 md:h-24 md:w-24">
               <AvatarImage src={profile.photo || "/placeholder.svg"} alt={profile.name} />
               <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
             </Avatar>
           </div>
-          <h2 className="text-2xl font-bold">{profile.name}</h2>
+          <h2 className="text-xl md:text-2xl font-bold">{profile.name}</h2>
           <div className="flex items-center justify-center text-sm text-muted-foreground">
             <MapPin className="mr-1 h-4 w-4" />
             {profile.address}
@@ -56,17 +62,17 @@ export function ProfileDetail({ profile }) {
       </Card>
 
       <Card className="md:col-span-2">
-        <CardHeader>
-          <h3 className="text-xl font-semibold">About</h3>
+        <CardHeader className="px-4 py-6">
+          <h3 className="text-lg md:text-xl font-semibold">About</h3>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <p>{profile.description}</p>
+        <CardContent className="px-4 pb-6 space-y-4 md:space-y-6">
+          <p className="text-sm md:text-base">{profile.description}</p>
 
           <div>
             <h4 className="text-sm font-medium text-muted-foreground mb-2">Interests</h4>
             <div className="flex flex-wrap gap-2">
               {profile.interests.map((interest) => (
-                <Badge key={interest} variant="secondary">
+                <Badge key={interest} variant="secondary" className="text-xs md:text-sm">
                   {interest}
                 </Badge>
               ))}
@@ -75,20 +81,10 @@ export function ProfileDetail({ profile }) {
 
           <div>
             <h4 className="text-sm font-medium text-muted-foreground mb-2">Location</h4>
-            <div
-              className="w-full h-64 bg-muted rounded-md flex items-center justify-center"
-              style={{
-                backgroundImage: `url(https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l+f43f5e(${profile.location.lng},${profile.location.lat})/${profile.location.lng},${profile.location.lat},12,0/600x400?access_token=pk.eyJ1IjoiZXhhbXBsZXVzZXIiLCJhIjoiY2xnNXRtcWRqMDh1eTNkcGZyaHJvdHdvdSJ9.xmtzjpDu5XFS3z_G0qKXBg)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <div className="bg-background/80 backdrop-blur-sm p-2 rounded-md">
-                <div className="flex items-center">
-                  <MapPin className="mr-1 h-4 w-4 text-destructive" />
-                  <span>{profile.address}</span>
-                </div>
-              </div>
+            <ProfileDetailMap profile={profile} />
+            <div className="flex items-center mt-2">
+              <MapPin className="mr-1 h-4 w-4 text-destructive" />
+              <span className="text-xs md:text-sm">{profile.address}</span>
             </div>
           </div>
         </CardContent>

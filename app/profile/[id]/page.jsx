@@ -55,8 +55,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
+    <div className="container mx-auto px-3 md:px-4 py-4 md:py-8">
+      <div className="mb-4 md:mb-6">
         <Link href="/">
           <Button variant="outline">
             <ArrowLeft className="mr-2 h-4 w-4" />
